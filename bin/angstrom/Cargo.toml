@@ -1,0 +1,70 @@
+[package]
+name = "angstrom"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+homepage.workspace = true
+repository.workspace = true
+description = """
+Angstrom Sidecar implementation
+"""
+
+[package.metadata.cargo-udeps.ignore]
+normal = [
+  # Used for diagrams in docs
+  "aquamarine",
+]
+
+[dependencies]
+# Alloy
+alloy-chains.workspace = true
+alloy-rpc-types.workspace = true
+alloy-primitives.workspace = true
+alloy.workspace = true
+
+# Reth
+reth.workspace = true
+reth-cli-util.workspace = true
+reth-metrics.workspace = true
+reth-network.workspace = true
+reth-network-peers.workspace = true
+reth-node-builder.workspace = true
+reth-node-ethereum.workspace = true
+reth-provider.workspace = true
+
+# Angstrom components
+angstrom-rpc.workspace = true
+angstrom-types.workspace = true
+angstrom-eth.workspace = true
+angstrom-metrics.workspace = true
+order-pool.workspace = true
+matching-engine.workspace = true
+angstrom-network.workspace = true
+validation.workspace = true
+consensus.workspace = true
+
+# Other things
+tokio.workspace = true
+tokio-util.workspace = true
+serde.workspace = true
+secp256k1 = { workspace = true, features = ["serde"] }
+clap = "4.4.8"
+eyre = "0.6.9"
+revm-inspectors = "=0.5.5"
+toml = "0.8.19"
+
+
+[target.'cfg(unix)'.dependencies]
+tikv-jemallocator = { version = "0.6.0", optional = true }
+
+
+[features]
+default = ["jemalloc"]
+jemalloc = ["dep:tikv-jemallocator"]
+jemalloc-prof = ["jemalloc", "tikv-jemallocator?/profiling"]
+
+
+[[bin]]
+name = "angstrom"
+path = "src/main.rs"
